@@ -14,5 +14,6 @@
 	the path helper method can be omitted and simple pass in its arguments -->
   <%= link_to 'Destroy Comment', [comment.article, comment],
                method: :delete,
-               data: { confirm: 'Are you sure?' } %>
+               data: { confirm: 'Are you sure?' },
+               class: 'btn btn-sm btn-danger' %>
 </p>
