@@ -1,13 +1,8 @@
 <p>
-  <strong>Commenter:</strong>
-  <%= comment.commenter %>
-</p>
- 
-<p>
-  <strong>Comment:</strong>
+  <strong><%= comment.user.email.split('@')[0].capitalize %>:</strong>
   <%= comment.body %>
 </p>
-
+<% if current_user == comment.user %>
 <p>
 	<!-- Notice how we pass in the id's as an array as opposed to the long way
 	of writing article_comment_path([comment.article, comment]) so we know that
@@ -17,3 +12,5 @@
                data: { confirm: 'Are you sure?' },
                class: 'btn btn-sm btn-danger' %>
 </p>
+<% end %>
+<hr>

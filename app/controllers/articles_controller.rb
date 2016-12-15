@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
-	http_basic_authenticate_with name: "ian", password: "password", except: [:index, :show]
+	before_action :authenticate_user!
+	before_action :find_article, except: [:index, :new, :create]
 
 	def index
 		@articles = Article.all
@@ -11,6 +12,7 @@ class ArticlesController < ApplicationController
 
 	def create
 		@article = Article.new(article_params)
+		@article.user = current_user
 		if @article.save
 		  redirect_to @article
 		else
@@ -19,31 +21,45 @@ class ArticlesController < ApplicationController
 	end
 
 	def show
-		@article = Article.find(params[:id])
 	end
 
 	def edit
-		@article = Article.find(params[:id])
+		if current_user != @article.user
+			flash[:alert] = "Access Denied!"
+			redirect_to root_path
+		end
 	end
 
 	def update
-		@article = Article.find(params[:id])
-		
-		if @article.update(article_params)
-			redirect_to @article
+		if current_user != @article.user
+			flash[:alert] = "Access Denied!"
+			redirect_to root_path
 		else
-			render 'edit'
+			if @article.update(article_params)
+				flash[:notice] = "Article successfully updated!"
+				redirect_to @article
+			else
+				render 'edit'
+			end
 		end
 	end
 
 	def destroy
-		@article = Article.find(params[:id])
-		@article.destroy
-
-		redirect_to articles_path
+		if current_user != @article.user
+			flash[:alert] = "Access Denied!"
+			redirect_to root_path
+		else
+			@article.destroy
+			flash[:notice] = "Article successfully destroyed!"
+			redirect_to articles_path
+		end
 	end
 
 	private
+
+	def find_article
+		@article = Article.find(params[:id]) 
+	end
 
 	def article_params
 		params.require(:article).permit(:title, :text)

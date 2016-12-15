@@ -10,7 +10,7 @@
     <div class="blog-post">
       <h2 class="blog-post-title"><%= article.title %></h2>
   
-      <p class="blog-post-meta"><%= article.created_at.to_s(:created_on) %> by <a href="#">Mark</a></p>
+      <p class="blog-post-meta"><%= article.created_at.to_s(:created_on) %> by <%= article.user.email.split('@')[0].capitalize %></p>
   
       <p><%= truncate(article.text, length: 20, omission: '...') %> <%= link_to 'Read more', article %></p>
     </div><!-- /.blog-post -->
