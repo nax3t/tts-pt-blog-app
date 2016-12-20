@@ -40,6 +40,8 @@ gem 'paperclip', '~> 5.0.0'
 gem 'figaro'
 # geocoder for address conversion to lat and lng
 gem 'geocoder'
+# aws for image storage
+gem 'aws-sdk'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
